@@ -111,7 +111,7 @@ public class Main {
                     listAvailableAdsForUser();
                     break;
                 case 3:
-                    buyerPurchaseAd(currentUser);
+                    PurchaseAd(currentUser);
                     break;
                 case 0:
                     System.out.println("Logging out...");
@@ -211,7 +211,7 @@ public class Main {
         }
     }
 
-    private static void buyerPurchaseAd(RegisteredUser buyer) {
+    private static void PurchaseAd(RegisteredUser buyer) {
         System.out.println("\n=== Purchase Advertisement ===");
 
         System.out.print("Enter Ad ID to purchase: ");
