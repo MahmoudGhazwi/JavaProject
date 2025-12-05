@@ -10,13 +10,13 @@ public class RegisteredUser extends User {
     // Constructor
     public RegisteredUser(String id, String username, String password) {
         super(id, username, password);
-        this.isBanned = false;
+        this.isBanned = false; // Default
         this.ads = new ArrayList<>();
     }
 
     // --- METHODS FROM UML ---
 
-    // Post new Ad
+    // Post new Ad ++++++
     public void postAd(Advertisement ad) {
         if (!isBanned) {
             ads.add(ad);
@@ -26,17 +26,17 @@ public class RegisteredUser extends User {
         }
     }
     
-    // View user ads
+    // View user ads ++++++
     public List<Advertisement> viewMyAds() {
         return ads;
     }
 
-    // Edit advertisement
+    // Edit advertisement ------
     public void editAd(String adId) {
         System.out.println("Editing ad with ID: " + adId);
     }
 
-    // Delete advertisement
+    // Delete advertisement ++++++
     public void deleteAd(String adId) {
 
     Advertisement target = null;
@@ -58,18 +58,18 @@ public class RegisteredUser extends User {
     }
 
 
-    // Search advertisements
+    // Search advertisements --- To main
     public List<Advertisement> searchAds(String keyword) {
         System.out.println("Searching ads with keyword: " + keyword);
         return new ArrayList<>(); // dummy return for now
     }
 
-    // View advertisement details
+    // View advertisement details --- To main
     public void viewAdDetails(String adId) {
         System.out.println("Viewing details of ad: " + adId);
     }
 
-    // Purchase an advertisement
+    // Purchase an advertisement --- To main
     public Transaction purchaseAd(String adId) {
         System.out.println("Purchasing ad with ID: " + adId);
         return new Transaction();
