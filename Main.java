@@ -153,7 +153,7 @@ public class Main {
                     admin.viewUnapprovedAds(allAds);
                     break;
                 case 3:
-                    adminApproveAd(admin);
+                    ApproveAd(admin);
                     break;
                 case 0:
                     System.out.println("Logging out...");
@@ -250,7 +250,7 @@ public class Main {
 
     // ---------- ADMIN OPERATIONS ----------
 
-    private static void adminApproveAd(Admin admin) {
+    private static void ApproveAd(Admin admin) {
         System.out.println("\n=== Approve Advertisement ===");
 
         System.out.print("Enter Ad ID to approve: ");
