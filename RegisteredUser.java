@@ -27,7 +27,7 @@ public class RegisteredUser extends User {
     }
     
     // View user ads ++++++
-    public List<Advertisement> viewMyAds() {
+    public List<Advertisement> MyAds() {
         return ads;
     }
 
