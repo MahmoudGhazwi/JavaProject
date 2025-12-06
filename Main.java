@@ -108,7 +108,7 @@ public class Main {
                     postNewAd(currentUser);
                     break;
                 case 2:
-                    listAvailableAdsForUser();
+                    listAvailableAds();
                     break;
                 case 3:
                     PurchaseAd(currentUser);
@@ -194,7 +194,7 @@ public class Main {
     }
 
     // User sees only approved and not sold ads
-    private static void listAvailableAdsForUser() {
+    private static void listAvailableAds() {
         System.out.println("\n=== Available Advertisements ===");
 
         boolean found = false;
