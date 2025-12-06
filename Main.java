@@ -93,7 +93,8 @@ public class Main {
             System.out.println("2) Show an advertisement details");
             System.out.println("3) Purchase an advertisement");
             System.out.println("4) Post a new advertisement");
-            System.out.println("5) Delete my advertisement");
+            System.out.println("5) Show my advertisements");
+            System.out.println("6) Delete my advertisement");
             System.out.println("0) Logout");
             System.out.println("=====================");
             System.out.print("Choose an option: ");
@@ -107,13 +108,22 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    postNewAd(currentUser);
+                    listAdsShort();
                     break;
                 case 2:
-                    listAvailableAds();
+                    showDetails();
                     break;
                 case 3:
                     PurchaseAd(currentUser);
+                    break;
+                case 4:
+                    postNewAd(currentUser);
+                    break;
+                case 5:
+                    showUserAds(currentUser);
+                    break;
+                case 6:
+                    deleteUserAd(currentUser);
                     break;
                 case 0:
                     System.out.println("Logging out...");
@@ -207,13 +217,26 @@ public class Main {
         }
 
         for (Advertisement ad : myAds) {
-            ad.displayDetails();   
+            ad.displayDetails();
+            System.out.println("Approved: " + ad.isApproved());
+            System.out.println("Sold: " + ad.isSold());
         }
+        
     }
+
+    private static void deleteUserAd(RegisteredUser currentUser) {
+    System.out.print("Enter Ad ID to delete: ");
+    String adId = scanner.nextLine();
+
+    currentUser.deleteAd(adId);   //RegisteredUser
+    Advertisement adToRemove = findAdById(adId);
+    
+    
+}
 
 
     // User sees only approved and not sold ads
-    private static void listAvailableAds() {
+    /*private static void listAvailableAds() {
         System.out.println("\n=== Available Advertisements ===");
 
         boolean found = false;
@@ -228,6 +251,26 @@ public class Main {
         if (!found) {
             System.out.println("No available advertisements to display.");
         }
+    }*/
+
+    private static void showDetails() {
+        
+        System.out.print("\nEnter Ad ID to view details: ");
+        String adId = scanner.nextLine();
+
+        Advertisement ad = findAdById(adId);
+
+        if (ad == null) {
+            System.out.println("No advertisement found with this ID.");
+            return;
+        }
+
+        if (!ad.isApproved()) {
+            System.out.println("This ad is not approved yet.");
+            return;
+        }
+        
+        ad.displayDetails();  //  Show full details
     }
 
     private static void PurchaseAd(RegisteredUser buyer) {
@@ -289,6 +332,21 @@ public class Main {
         }
     }
 
+    private static void listAllAds() {
+        System.out.println("\n=== All Advertisements (Admin View) ===");
+
+        if (allAds.isEmpty()) {
+            System.out.println("No advertisements available.");
+            return;
+        }
+
+        for (Advertisement ad : allAds) {
+            ad.displayDetails();
+            System.out.println("Approved: " + ad.isApproved());
+            System.out.println("Sold: " + ad.isSold());
+        }
+    }
+
     // ---------- SHARED HELPERS ----------
     private static void listAdsShort() {
         System.out.println("\n=== Available Advertisements ===");
@@ -304,19 +362,6 @@ public class Main {
 
         if (!found) {
             System.out.println("No available advertisements.");
-        }
-    }
-
-    private static void listAllAds() {
-        System.out.println("\n=== All Advertisements (Admin View) ===");
-
-        if (allAds.isEmpty()) {
-            System.out.println("No advertisements available.");
-            return;
-        }
-
-        for (Advertisement ad : allAds) {
-            ad.displayDetails();
         }
     }
 

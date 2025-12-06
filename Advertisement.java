@@ -35,8 +35,6 @@ public class Advertisement {
         System.out.println("Price: " + price);
         System.out.println("Category: " + category);
         System.out.println("Owner: " + owner.getUsername());
-        System.out.println("Approved: " + isApproved);
-        System.out.println("Sold: " + isSold);
         System.out.println("-----------------------------------");
     }
 
