@@ -60,7 +60,12 @@ public class Main {
 
             // Check registered users
             for (RegisteredUser user : users) {
+
                 if (user.login(id, password)) {
+                    if (user.isBanned()){
+                        System.out.println("This user is Banned!");
+                        return null;
+                    }
                     System.out.println("Logged in as Registered User: " + user.getUsername());
                     return user;
                 }
@@ -206,7 +211,6 @@ public class Main {
         owner.postAd(ad);
         allAds.add(ad);
 
-        System.out.println("Ad created and pending admin approval.");
     }
 
     private static void showUserAds(RegisteredUser currentUser) {

@@ -18,12 +18,9 @@ public class RegisteredUser extends User {
 
     // Post new Ad ++++++
     public void postAd(Advertisement ad) {
-        if (!isBanned) {
-            ads.add(ad);
-            System.out.println("Ad posted successfully!");
-        } else {
-            System.out.println("User is banned and cannot post ads.");
-        }
+        ads.add(ad); 
+        System.out.println("Ad posted successfully!");
+        System.out.println("pending admin approval.");
     }
     
     // View user ads ++++++
