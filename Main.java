@@ -228,10 +228,12 @@ public class Main {
     System.out.print("Enter Ad ID to delete: ");
     String adId = scanner.nextLine();
 
-    currentUser.deleteAd(adId);   //RegisteredUser
-    Advertisement adToRemove = findAdById(adId);
-    
-    
+    currentUser.deleteAd(adId);   //RegisteredUser Deleting ad from user
+
+    Advertisement adToRemove = findAdById(adId);     //Deleting ad from allAds list
+    if (adToRemove != null && adToRemove.getOwner() == currentUser) {
+        allAds.remove(adToRemove);
+    }
 }
 
 
