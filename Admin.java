@@ -18,7 +18,7 @@ public class Admin extends User {
             }
         }
     }
-
+ 
     // Approve an advertisement
     public void approveAd(Advertisement ad) {
         ad.setApproved(true);

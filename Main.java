@@ -22,6 +22,10 @@ public class Main {
         RegisteredUser buyer  = new RegisteredUser("U2", "buyer123", "pass2");
         Admin admin           = new Admin("A1", "admin", "admin123");
 
+        Advertisement ad1 = new Advertisement("A1", "title", "description", 100, "category", seller);
+        ad1.setApproved(true);
+        allAds.add(ad1);
+
         users.add(seller);
         users.add(buyer);
         admins.add(admin);
@@ -210,7 +214,6 @@ public class Main {
         Advertisement ad = new Advertisement(id, title, description, price, category, owner);
         owner.postAd(ad);
         allAds.add(ad);
-
     }
 
     private static void showUserAds(RegisteredUser currentUser) {
