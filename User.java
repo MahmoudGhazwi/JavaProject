@@ -9,7 +9,9 @@ public abstract class User {
         this.username = username;
         this.password = password;
     }
-
+    public String getId(){
+        return id;
+    }
     public String getUsername() {
         return username;
     }

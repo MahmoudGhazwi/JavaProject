@@ -146,6 +146,7 @@ public class Main {
             System.out.println("1) View all advertisements");
             System.out.println("2) View unapproved advertisements");
             System.out.println("3) Approve an advertisement");
+            System.out.println("4) Banned an user");
             System.out.println("0) Logout");
             System.out.println("======================");
             System.out.print("Choose an option: ");
@@ -166,6 +167,9 @@ public class Main {
                     break;
                 case 3:
                     ApproveAd(admin);
+                    break;
+                case 4:
+                    bannedUser();
                     break;
                 case 0:
                     System.out.println("Logging out...");
@@ -314,7 +318,7 @@ public class Main {
 
     // ---------- ADMIN OPERATIONS ----------
 
-    private static void ApproveAd(Admin admin) {
+    private static void ApproveAd(Admin currentAdmin) {
         System.out.println("\n=== Approve Advertisement ===");
 
         System.out.print("Enter Ad ID to approve: ");
@@ -330,7 +334,7 @@ public class Main {
         if (ad.isApproved()) {
             System.out.println("This ad is already approved.");
         } else {
-            admin.approveAd(ad);
+            currentAdmin.approveAd(ad);
         }
     }
 
@@ -348,6 +352,50 @@ public class Main {
             System.out.println("Sold: " + ad.isSold());
         }
     }
+
+    private static void bannedUser() {
+        System.out.println("\n=== Ban a User ===");
+        
+        // Show users
+        if (users.isEmpty()) {
+            System.out.println("No registered users found.");
+            return;
+        }
+
+        System.out.println("Registered Users:");
+        for (RegisteredUser user : users) {
+            System.out.println("ID: " + user.getId() + " | Username: " + user.getUsername());
+        }
+
+        System.out.print("\nEnter User ID to ban: ");
+        String userId = scanner.nextLine();
+
+        // Searching for user
+        RegisteredUser userToBan = null;
+
+        for (RegisteredUser user : users) {
+            if (user.getId().equals(userId)) {
+                userToBan = user;
+                break;
+            }
+        }
+
+        if (userToBan == null) {
+            System.out.println("No user found with this ID.");
+            return;
+        }
+
+        // If already banned
+        if (userToBan.isBanned()) {
+            System.out.println("This user is already banned.");
+            return;
+        }
+
+        // Banned
+        userToBan.setBanned(true);
+        System.out.println("User " + userToBan.getUsername() + " has been banned successfully.");
+    }
+
 
     // ---------- SHARED HELPERS ----------
     private static void listAdsShort() {
