@@ -89,9 +89,11 @@ public class Main {
         do {
             System.out.println("\n===== User Menu =====");
             System.out.println("Logged in as: " + currentUser.getUsername());
-            System.out.println("1) Post a new advertisement");
-            System.out.println("2) View available advertisements");
+            System.out.println("1) View available advertisements");
+            System.out.println("2) Show an advertisement details");
             System.out.println("3) Purchase an advertisement");
+            System.out.println("4) Post a new advertisement");
+            System.out.println("5) Delete my advertisement");
             System.out.println("0) Logout");
             System.out.println("=====================");
             System.out.print("Choose an option: ");
@@ -193,6 +195,23 @@ public class Main {
         System.out.println("Ad created and pending admin approval.");
     }
 
+    private static void showUserAds(RegisteredUser currentUser) {
+
+        System.out.println("\n=== My Advertisements ===");
+
+        List<Advertisement> myAds = currentUser.MyAds();  
+
+        if (myAds.isEmpty()) {
+            System.out.println("You have no advertisements.");
+            return;
+        }
+
+        for (Advertisement ad : myAds) {
+            ad.displayDetails();   
+        }
+    }
+
+
     // User sees only approved and not sold ads
     private static void listAvailableAds() {
         System.out.println("\n=== Available Advertisements ===");
@@ -271,6 +290,22 @@ public class Main {
     }
 
     // ---------- SHARED HELPERS ----------
+    private static void listAdsShort() {
+        System.out.println("\n=== Available Advertisements ===");
+
+        boolean found = false;
+
+        for (Advertisement ad : allAds) {
+            if (ad.isApproved() && !ad.isSold()) {
+                System.out.println("ID: " + ad.getId() + " | Title: " + ad.getTitle());
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No available advertisements.");
+        }
+    }
 
     private static void listAllAds() {
         System.out.println("\n=== All Advertisements (Admin View) ===");
