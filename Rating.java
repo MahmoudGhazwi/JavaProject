@@ -21,11 +21,7 @@ public class Rating {
     // --- METHOD FROM UML ---
     public void applyRating() {
         System.out.println("Rating applied successfully:");
-        System.out.println("Rated By: " + ratedBy.getUsername());
-        System.out.println("Rated User: " + ratedUser.getUsername());
-        System.out.println("Score: " + score);
-        System.out.println("Comment: " + comment);
-        System.out.println("Transaction ID: " + transaction.getId());
+        System.out.println(this);  // استخدام toString
     }
 
     // --- GETTERS ---
@@ -47,5 +43,14 @@ public class Rating {
 
     public String getComment() {
         return comment;
+    }
+
+    @Override
+    public String toString() {
+        return "Score: " + score
+                + " | Rated By: " + ratedBy.getUsername()
+                + " | Rated User: " + ratedUser.getUsername()
+                + " | Comment: " + comment
+                + " | Transaction ID: " + transaction.getId();
     }
 }

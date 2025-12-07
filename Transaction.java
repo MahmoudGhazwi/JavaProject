@@ -59,4 +59,14 @@ public class Transaction {
     public String getStatus() {
         return status;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction ID: " + id
+                + " | Buyer: " + buyer.getUsername()
+                + " | Seller: " + seller.getUsername()
+                + " | Ad: " + ad.getTitle()
+                + " | Price: " + finalPrice
+                + " | Status: " + status;
+    }
 }

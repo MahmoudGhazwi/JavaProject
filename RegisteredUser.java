@@ -16,8 +16,6 @@ public class RegisteredUser extends User {
         this.ratings = new ArrayList<>();
     }
 
-    // --- METHODS FROM UML ---
-
     // Post new Ad ++++++
     public void postAd(Advertisement ad) {
         ads.add(ad); 
@@ -30,7 +28,7 @@ public class RegisteredUser extends User {
         return ads;
     }
 
-    // Edit advertisement ------
+    // Edit advertisement (placeholder)
     public void editAd(String adId) {
         System.out.println("Editing ad with ID: " + adId);
     }
@@ -38,30 +36,46 @@ public class RegisteredUser extends User {
     // Delete advertisement ++++++
     public void deleteAd(String adId) {
 
-    Advertisement target = null;
+        Advertisement target = null;
 
-    for (Advertisement ad : ads) {
-        if (ad.getId().equals(adId)) {
-            target = ad;
-            break;
+        for (Advertisement ad : ads) {
+            if (ad.getId().equals(adId)) {
+                target = ad;
+                break;
+            }
         }
-    }
 
-    if (target == null) {
-        System.out.println("No advertisement found with this ID.");
-        return;
-    }
+        if (target == null) {
+            System.out.println("No advertisement found with this ID.");
+            return;
+        }
 
-    ads.remove(target);
-    System.out.println("Advertisement " + adId + " deleted successfully.");
+        ads.remove(target);
+        System.out.println("Advertisement " + adId + " deleted successfully.");
     }
 
     // Add rating
     public void addRating(Rating rating) {
         ratings.add(rating);
     }
+    
+    // Search advertisements --- To main
+    public List<Advertisement> searchAds(String keyword) {
+        System.out.println("Searching ads with keyword: " + keyword);
+        return new ArrayList<>(); // dummy return for now
+    }
 
-    // Extra getters and setters
+    // View advertisement details --- To main
+    public void viewAdDetails(String adId) {
+        System.out.println("Viewing details of ad: " + adId);
+    }
+
+    // Purchase an advertisement --- To main
+    public Transaction purchaseAd(String adId) {
+        System.out.println("Purchasing ad with ID: " + adId);
+        return new Transaction();
+    }
+
     public List<Rating> getRatings() {
         return ratings;
     }
@@ -72,5 +86,14 @@ public class RegisteredUser extends User {
 
     public void setBanned(boolean banned) {
         isBanned = banned;
+    }
+
+    @Override
+    public String toString() {
+        return "User ID: " + getId()
+                + " | Username: " + getUsername()
+                + " | Ads Posted: " + ads.size()
+                + " | Ratings: " + ratings.size()
+                + " | Banned: " + isBanned;
     }
 }
