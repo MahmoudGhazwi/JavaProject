@@ -248,7 +248,8 @@ public class Main {
 }
 
 
-    // User sees only approved and not sold ads
+        // User sees only approved and not sold ads
+
     /*private static void listAvailableAds() {
         System.out.println("\n=== Available Advertisements ===");
 
@@ -321,6 +322,44 @@ public class Main {
         allTransactions.add(t);
 
         System.out.println("Transaction created: " + t.getId());
+
+        createRatingForTransaction(buyer, t);
+    }
+
+    private static void createRatingForTransaction(RegisteredUser buyer, Transaction transaction) {
+
+        RegisteredUser seller = transaction.getSeller();  // get seller from transaction
+
+        System.out.println("\n=== Rate the Seller ===");
+        System.out.println("You just bought: " + transaction.getAd().getTitle());
+        System.out.println("Seller: " + seller.getUsername());
+
+        int score;
+        while (true) {
+            System.out.print("Enter rating (1-5): ");
+            while (!scanner.hasNextInt()) {
+                System.out.print("Enter a number between 1 and 5: ");
+                scanner.next();
+            }
+            score = scanner.nextInt();
+            scanner.nextLine(); // consume newline
+
+            if (score >= 1 && score <= 5) {
+                break;
+            }
+            System.out.println("Invalid rating. Please enter between 1 and 5.");
+        }
+
+        System.out.print("Enter comment: ");
+        String comment = scanner.nextLine();
+
+        Rating rating = new Rating(buyer, seller, transaction, score, comment);
+
+        // Apply rating (print informations)
+        rating.applyRating();
+
+        // Add rating to user who received rate
+        seller.addRating(rating);
     }
 
     // ---------- ADMIN OPERATIONS ----------

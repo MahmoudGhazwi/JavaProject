@@ -6,12 +6,14 @@ public class RegisteredUser extends User {
     // Attributes
     private boolean isBanned;
     private List<Advertisement> ads;
-
+    private List<Rating> ratings;   // ratings received
+    
     // Constructor
     public RegisteredUser(String id, String username, String password) {
         super(id, username, password);
         this.isBanned = false; // Default
         this.ads = new ArrayList<>();
+        this.ratings = new ArrayList<>();
     }
 
     // --- METHODS FROM UML ---
@@ -54,7 +56,11 @@ public class RegisteredUser extends User {
     System.out.println("Advertisement " + adId + " deleted successfully.");
     }
 
-
+    // Add rating
+    public void addRating(Rating rating) {
+        ratings.add(rating);
+    }
+    
     // Search advertisements --- To main
     public List<Advertisement> searchAds(String keyword) {
         System.out.println("Searching ads with keyword: " + keyword);
@@ -73,6 +79,10 @@ public class RegisteredUser extends User {
     }
 
     // Extra getters and setters
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
 
     public boolean isBanned() {
         return isBanned;
