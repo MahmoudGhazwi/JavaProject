@@ -59,7 +59,7 @@ public class RegisteredUser extends User {
         ratings.add(rating);
     }
     
-    // getter
+    // get rating list
     public List<Rating> getRatings() {
         return ratings;
     }

@@ -218,7 +218,7 @@ public class Main {
         }
     }
 
-    // list all adds to user
+    // list all Ads to user
     private static void listAdsShort() { 
         System.out.println("\n=== Available Advertisements ==="); 
         boolean found = false; 
@@ -232,7 +232,7 @@ public class Main {
         } 
     }
 
-    // show specifiec Ad details
+    // show specifiec Ad's details
     private static void showDetails() {
         System.out.print("Enter Ad ID: ");
         String id = scanner.nextLine();
@@ -251,7 +251,8 @@ public class Main {
 
         ad.displayDetails();
     }
-     
+
+    // user purchase an Ad
     private static void purchaseAd(RegisteredUser buyer) {
         System.out.print("Enter Ad ID: ");
         String id = scanner.nextLine();
@@ -277,6 +278,7 @@ public class Main {
         createRatingForTransaction(buyer, t);
     }
 
+    // View other user details & Rating
     private static void viewOtherUserInfo() {
 
         System.out.print("Enter User ID to view: ");
@@ -295,6 +297,7 @@ public class Main {
 
     // ====================== RATING ======================
 
+    // Implement after purchasing
     private static void createRatingForTransaction(RegisteredUser buyer, Transaction transaction) {
 
         RegisteredUser seller = transaction.getSeller();
@@ -319,7 +322,6 @@ public class Main {
         rating.applyRating();
         seller.addRating(rating);
     }
-
 
     // ====================== ADMIN OPERATIONS ======================
 

@@ -18,7 +18,7 @@ public class Rating {
         this.comment = comment;
     }
 
-    // --- METHOD FROM UML ---
+    // --- METHOD ---
     public void applyRating() {
         System.out.println("Rating applied successfully:");
         System.out.println(this);  // using toString
