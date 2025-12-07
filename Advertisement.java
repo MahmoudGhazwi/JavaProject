@@ -67,6 +67,10 @@ public class Advertisement {
         return category;
     }
 
+    public String getDescription() {
+        return description;
+    }
+    
     public double getPrice() {
         return price;
     }
@@ -79,4 +83,6 @@ public class Advertisement {
                 + " | Category: " + category
                 + " | Owner: " + owner.getUsername();
     }
+
+
 }
