@@ -26,7 +26,7 @@ public class Advertisement {
         this.isSold = false;     // default
     }
 
-    // Old detailed display
+    // Old detailed display )
     public void displayDetails() {
         System.out.println(toString());
     }

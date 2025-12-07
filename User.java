@@ -9,11 +9,9 @@ public abstract class User {
         this.username = username;
         this.password = password;
     }
-
     public String getId(){
         return id;
     }
-
     public String getUsername() {
         return username;
     }
@@ -24,10 +22,5 @@ public abstract class User {
     
     public void logout(){
         System.out.println(username + " logged out.");
-    }
-
-    @Override
-    public String toString() {
-        return "User ID: " + id + " | Username: " + username;
     }
 }
