@@ -7,14 +7,12 @@ public class Admin extends User {
         super(id, username, password);
     }
 
-    // --- METHODS FROM UML ---
-
     // View ads that are not approved yet
     public void viewUnapprovedAds(List<Advertisement> ads) {
         System.out.println("=== Unapproved Advertisements ===");
         for (Advertisement ad : ads) {
             if (!ad.isApproved()) {
-                ad.displayDetails();
+                System.out.println(ad); // Using toString 
             }
         }
     }
@@ -35,5 +33,11 @@ public class Admin extends User {
     public void banUser(RegisteredUser user) {
         user.setBanned(true);
         System.out.println("User " + user.getUsername() + " has been banned.");
+    }
+
+    @Override
+    public String toString() {
+        return "Admin ID: " + getId()
+                + " | Username: " + getUsername();
     }
 }

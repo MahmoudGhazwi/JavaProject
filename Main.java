@@ -8,40 +8,39 @@ public class Main {
 
     private static List<Advertisement> allAds = new ArrayList<>();
     private static List<Transaction> allTransactions = new ArrayList<>();
-
     private static List<RegisteredUser> users = new ArrayList<>();
     private static List<Admin> admins = new ArrayList<>();
 
-    // Auto ID counter for advertisements: A1, A2, A3, ...
-    private static int adCounter = 1;
+    private static int adCounter = 1;   // A1, A2, A3...
 
     public static void main(String[] args) {
 
-        // Sample users
+        // Sample Data
         RegisteredUser seller = new RegisteredUser("U1", "seller123", "pass1");
         RegisteredUser buyer  = new RegisteredUser("U2", "buyer123", "pass2");
         Admin admin           = new Admin("A1", "admin", "admin123");
 
-        Advertisement ad1 = new Advertisement("A1", "title", "description", 100, "category", seller);
+        Advertisement ad1 = new Advertisement("A1", "Sample Product", "Example description", 100, "General", seller);
         ad1.setApproved(true);
-        allAds.add(ad1);
 
+        allAds.add(ad1);
         users.add(seller);
         users.add(buyer);
         admins.add(admin);
 
-        System.out.println("=== Simple Marketplace System ===");
+        System.out.println("=== Marketplace System ===");
 
         while (true) {
             User currentUser = login();
+
             if (currentUser == null) {
-                System.out.println("Too many failed attempts. Exiting program...");
+                System.out.println("Too many failed attempts. Exiting...");
                 break;
             }
 
             if (currentUser instanceof Admin) {
                 runAdminMenu((Admin) currentUser);
-            } else if (currentUser instanceof RegisteredUser) {
+            } else {
                 runUserMenu((RegisteredUser) currentUser);
             }
         }
@@ -49,7 +48,8 @@ public class Main {
         scanner.close();
     }
 
-    // ---------- LOGIN BY ID + PASSWORD USING User.login() ----------
+
+    // ====================== LOGIN ======================
 
     private static User login() {
         int attempts = 0;
@@ -62,15 +62,20 @@ public class Main {
             System.out.print("Password: ");
             String password = scanner.nextLine();
 
-            // Check registered users
+            // Check registered users (fix: check ID first then ban then password)
             for (RegisteredUser user : users) {
-                if (user.isBanned()) {
-                    System.out.println("This user is Banned!");
-                    return null;
-                }
-                if (user.login(id, password)) {
-                    System.out.println("Logged in as Registered User: " + user.getUsername());
-                    return user;
+
+                if (user.getId().equals(id)) {
+
+                    if (user.isBanned()) {
+                        System.out.println("This user is banned!");
+                        return null;
+                    }
+
+                    if (user.login(id, password)) {
+                        System.out.println("Logged in as Registered User: " + user.getUsername());
+                        return user;
+                    }
                 }
             }
 
@@ -82,14 +87,15 @@ public class Main {
                 }
             }
 
-            System.out.println("Invalid ID or password. Try again.");
+            System.out.println("Invalid ID or password.");
             attempts++;
         }
 
-        return null; // failed login
+        return null;
     }
 
-    // ---------- USER MENU (RegisteredUser) ----------
+
+    // ====================== USER MENU ======================
 
     private static void runUserMenu(RegisteredUser currentUser) {
         int choice;
@@ -98,52 +104,32 @@ public class Main {
             System.out.println("\n===== User Menu =====");
             System.out.println("Logged in as: " + currentUser.getUsername());
             System.out.println("1) View available advertisements");
-            System.out.println("2) Show an advertisement details");
+            System.out.println("2) Show advertisement details");
             System.out.println("3) Purchase an advertisement");
             System.out.println("4) Post a new advertisement");
             System.out.println("5) Show my advertisements");
             System.out.println("6) Delete my advertisement");
             System.out.println("0) Logout");
-            System.out.println("=====================");
-            System.out.print("Choose an option: ");
+            System.out.print("Choose: ");
 
-            while (!scanner.hasNextInt()) {
-                System.out.print("Enter a valid number: ");
-                scanner.next();
-            }
-            choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            choice = readInt();
 
             switch (choice) {
-                case 1:
-                    listAdsShort();
-                    break;
-                case 2:
-                    showDetails();
-                    break;
-                case 3:
-                    PurchaseAd(currentUser);
-                    break;
-                case 4:
-                    postNewAd(currentUser);
-                    break;
-                case 5:
-                    showUserAds(currentUser);
-                    break;
-                case 6:
-                    deleteUserAd(currentUser);
-                    break;
-                case 0:
-                    System.out.println("Logging out...");
-                    break;
-                default:
-                    System.out.println("Invalid option. Try again.");
+                case 1 -> listAdsShort();
+                case 2 -> showDetails();
+                case 3 -> purchaseAd(currentUser);
+                case 4 -> postNewAd(currentUser);
+                case 5 -> showUserAds(currentUser);
+                case 6 -> deleteUserAd(currentUser);
+                case 0 -> System.out.println("Logging out...");
+                default -> System.out.println("Invalid option.");
             }
 
         } while (choice != 0);
     }
 
-    // ---------- ADMIN MENU ----------
+
+    // ====================== ADMIN MENU ======================
 
     private static void runAdminMenu(Admin admin) {
         int choice;
@@ -153,61 +139,44 @@ public class Main {
             System.out.println("Logged in as: " + admin.getUsername());
             System.out.println("1) View all advertisements");
             System.out.println("2) View unapproved advertisements");
-            System.out.println("3) Approve an advertisement");
-            System.out.println("4) Banned an user");
+            System.out.println("3) Approve advertisement");
+            System.out.println("4) Ban a user");
             System.out.println("0) Logout");
-            System.out.println("======================");
-            System.out.print("Choose an option: ");
+            System.out.print("Choose: ");
 
-            while (!scanner.hasNextInt()) {
-                System.out.print("Enter a valid number: ");
-                scanner.next();
-            }
-            choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            choice = readInt();
 
             switch (choice) {
-                case 1:
-                    listAllAds();
-                    break;
-                case 2:
-                    admin.viewUnapprovedAds(allAds);
-                    break;
-                case 3:
-                    ApproveAd(admin);
-                    break;
-                case 4:
-                    bannedUser();
-                    break;
-                case 0:
-                    System.out.println("Logging out...");
-                    break;
-                default:
-                    System.out.println("Invalid option. Try again.");
+                case 1 -> listAllAds();
+                case 2 -> admin.viewUnapprovedAds(allAds);
+                case 3 -> approveAd(admin);
+                case 4 -> banUser();
+                case 0 -> System.out.println("Logging out...");
+                default -> System.out.println("Invalid option.");
             }
 
         } while (choice != 0);
     }
 
-    // ---------- USER OPERATIONS ----------
+
+    // ====================== USER OPERATIONS ======================
 
     private static void postNewAd(RegisteredUser owner) {
         System.out.println("\n=== Post a New Advertisement ===");
 
-        // Auto-generate ID: A1, A2, A3, ...
         String id = "A" + adCounter++;
-        System.out.println("Generated Ad ID: " + id);
+        System.out.println("Generated ID: " + id);
 
-        System.out.print("Enter Title: ");
+        System.out.print("Title: ");
         String title = scanner.nextLine();
 
-        System.out.print("Enter Description: ");
+        System.out.print("Description: ");
         String description = scanner.nextLine();
 
-        System.out.print("Enter Price: ");
+        System.out.print("Price: ");
         double price = readDouble();
 
-        System.out.print("Enter Category: ");
+        System.out.print("Category: ");
         String category = scanner.nextLine();
 
         Advertisement ad = new Advertisement(id, title, description, price, category, owner);
@@ -216,83 +185,38 @@ public class Main {
     }
 
     private static void showUserAds(RegisteredUser currentUser) {
-
-        System.out.println("\n=== My Advertisements ===");
-
-        List<Advertisement> myAds = currentUser.myAds();  
+        List<Advertisement> myAds = currentUser.myAds();
 
         if (myAds.isEmpty()) {
-            System.out.println("You have no advertisements.");
+            System.out.println("You have no ads.");
             return;
         }
 
+        System.out.println("\n=== My Advertisements ===");
         for (Advertisement ad : myAds) {
             ad.displayDetails();
             System.out.println("Approved: " + ad.isApproved());
             System.out.println("Sold: " + ad.isSold());
         }
-        
     }
 
     private static void deleteUserAd(RegisteredUser currentUser) {
-    System.out.print("Enter Ad ID to delete: ");
-    String adId = scanner.nextLine();
+        System.out.print("Enter Ad ID to delete: ");
+        String id = scanner.nextLine();
 
-    currentUser.deleteAd(adId);   //RegisteredUser Deleting ad from user
+        currentUser.deleteAd(id);
 
-    Advertisement adToRemove = findAdById(adId);     //Deleting ad from allAds list
-    if (adToRemove != null && adToRemove.getOwner() == currentUser) {
-        allAds.remove(adToRemove);
+        Advertisement ad = findAdById(id);
+        if (ad != null && ad.getOwner() == currentUser) {
+            allAds.remove(ad);
+        }
     }
-}
-
-
-        // User sees only approved and not sold ads
-
-    /*private static void listAvailableAds() {
-        System.out.println("\n=== Available Advertisements ===");
-
-        boolean found = false;
-
-        for (Advertisement ad : allAds) {
-            if (ad.isApproved() && !ad.isSold()) {
-                ad.displayDetails();
-                found = true;
-            }
-        }
-
-        if (!found) {
-            System.out.println("No available advertisements to display.");
-        }
-    }*/
 
     private static void showDetails() {
-        
-        System.out.print("\nEnter Ad ID to view details: ");
-        String adId = scanner.nextLine();
+        System.out.print("Enter Ad ID: ");
+        String id = scanner.nextLine();
 
-        Advertisement ad = findAdById(adId);
-
-        if (ad == null) {
-            System.out.println("No advertisement found with this ID.");
-            return;
-        }
-
-        if (!ad.isApproved()) {
-            System.out.println("This ad is not approved yet.");
-            return;
-        }
-        
-        ad.displayDetails();  //  Show full details
-    }
-
-    private static void PurchaseAd(RegisteredUser buyer) {
-        System.out.println("\n=== Purchase Advertisement ===");
-
-        System.out.print("Enter Ad ID to purchase: ");
-        String adId = scanner.nextLine();
-
-        Advertisement ad = findAdById(adId);
+        Advertisement ad = findAdById(id);
 
         if (ad == null) {
             System.out.println("Ad not found.");
@@ -300,12 +224,22 @@ public class Main {
         }
 
         if (!ad.isApproved()) {
-            System.out.println("Cannot purchase an unapproved ad.");
+            System.out.println("This ad is not approved.");
             return;
         }
 
-        if (ad.isSold()) {
-            System.out.println("This ad has already been sold.");
+        ad.displayDetails();
+    }
+
+
+    private static void purchaseAd(RegisteredUser buyer) {
+        System.out.print("Enter Ad ID: ");
+        String id = scanner.nextLine();
+
+        Advertisement ad = findAdById(id);
+
+        if (ad == null || !ad.isApproved() || ad.isSold()) {
+            System.out.println("Ad not available.");
             return;
         }
 
@@ -320,56 +254,45 @@ public class Main {
         t.completeTransaction();
         allTransactions.add(t);
 
-        System.out.println("Transaction created: " + t.getId());
-
         createRatingForTransaction(buyer, t);
     }
 
+
+    // ====================== RATING ======================
+
     private static void createRatingForTransaction(RegisteredUser buyer, Transaction transaction) {
 
-        RegisteredUser seller = transaction.getSeller();  // get seller from transaction
+        RegisteredUser seller = transaction.getSeller();
 
         System.out.println("\n=== Rate the Seller ===");
-        System.out.println("You just bought: " + transaction.getAd().getTitle());
+        System.out.println("Product: " + transaction.getAd().getTitle());
         System.out.println("Seller: " + seller.getUsername());
 
         int score;
         while (true) {
-            System.out.print("Enter rating (1-5): ");
-            while (!scanner.hasNextInt()) {
-                System.out.print("Enter a number between 1 and 5: ");
-                scanner.next();
-            }
-            score = scanner.nextInt();
-            scanner.nextLine(); // consume newline
-
-            if (score >= 1 && score <= 5) {
-                break;
-            }
-            System.out.println("Invalid rating. Please enter between 1 and 5.");
+            System.out.print("Rating (1-5): ");
+            score = readInt();
+            if (score >= 1 && score <= 5) break;
+            System.out.println("Invalid rating.");
         }
 
-        System.out.print("Enter comment: ");
+        System.out.print("Comment: ");
         String comment = scanner.nextLine();
 
         Rating rating = new Rating(buyer, seller, transaction, score, comment);
 
-        // Apply rating (print informations)
         rating.applyRating();
-
-        // Add rating to user who received rate
         seller.addRating(rating);
     }
 
-    // ---------- ADMIN OPERATIONS ----------
 
-    private static void ApproveAd(Admin currentAdmin) {
-        System.out.println("\n=== Approve Advertisement ===");
+    // ====================== ADMIN OPERATIONS ======================
 
+    private static void approveAd(Admin admin) {
         System.out.print("Enter Ad ID to approve: ");
-        String adId = scanner.nextLine();
+        String id = scanner.nextLine();
 
-        Advertisement ad = findAdById(adId);
+        Advertisement ad = findAdById(id);
 
         if (ad == null) {
             System.out.println("Ad not found.");
@@ -377,17 +300,18 @@ public class Main {
         }
 
         if (ad.isApproved()) {
-            System.out.println("This ad is already approved.");
-        } else {
-            currentAdmin.approveAd(ad);
+            System.out.println("Already approved.");
+            return;
         }
+
+        admin.approveAd(ad);
     }
 
     private static void listAllAds() {
-        System.out.println("\n=== All Advertisements (Admin View) ===");
+        System.out.println("\n=== All Advertisements ===");
 
         if (allAds.isEmpty()) {
-            System.out.println("No advertisements available.");
+            System.out.println("No ads available.");
             return;
         }
 
@@ -398,75 +322,49 @@ public class Main {
         }
     }
 
-    private static void bannedUser() {
-        System.out.println("\n=== Ban a User ===");
-        
-        // Show users
-        if (users.isEmpty()) {
-            System.out.println("No registered users found.");
-            return;
-        }
+    private static void banUser() {
+        System.out.println("\n=== Ban User ===");
 
-        System.out.println("Registered Users:");
         for (RegisteredUser user : users) {
             System.out.println("ID: " + user.getId() + " | Username: " + user.getUsername());
         }
 
-        System.out.print("\nEnter User ID to ban: ");
-        String userId = scanner.nextLine();
+        System.out.print("Enter ID: ");
+        String id = scanner.nextLine();
 
-        // Searching for user
-        RegisteredUser userToBan = null;
-
-        for (RegisteredUser user : users) {
-            if (user.getId().equals(userId)) {
-                userToBan = user;
-                break;
+        for (RegisteredUser u : users) {
+            if (u.getId().equals(id)) {
+                if (u.isBanned()) {
+                    System.out.println("Already banned.");
+                } else {
+                    u.setBanned(true);
+                    System.out.println("User banned successfully.");
+                }
+                return;
             }
         }
 
-        if (userToBan == null) {
-            System.out.println("No user found with this ID.");
-            return;
-        }
-
-        // If already banned
-        if (userToBan.isBanned()) {
-            System.out.println("This user is already banned.");
-            return;
-        }
-
-        // Banned
-        userToBan.setBanned(true);
-        System.out.println("User " + userToBan.getUsername() + " has been banned successfully.");
+        System.out.println("User not found.");
     }
 
 
-    // ---------- SHARED HELPERS ----------
-    private static void listAdsShort() {
-        System.out.println("\n=== Available Advertisements ===");
-
-        boolean found = false;
-
-        for (Advertisement ad : allAds) {
-            if (ad.isApproved() && !ad.isSold()) {
-                System.out.println("ID: " + ad.getId() + " | Title: " + ad.getTitle());
-                found = true;
-            }
-        }
-
-        if (!found) {
-            System.out.println("No available advertisements.");
-        }
-    }
+    // ====================== HELPERS ======================
 
     private static Advertisement findAdById(String id) {
         for (Advertisement ad : allAds) {
-            if (ad.getId().equals(id)) {
-                return ad;
-            }
+            if (ad.getId().equals(id)) return ad;
         }
         return null;
+    }
+
+    private static int readInt() {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Enter a valid number: ");
+            scanner.next();
+        }
+        int x = scanner.nextInt();
+        scanner.nextLine();
+        return x;
     }
 
     private static double readDouble() {
@@ -474,8 +372,8 @@ public class Main {
             System.out.print("Enter a valid number: ");
             scanner.next();
         }
-        double val = scanner.nextDouble();
-        scanner.nextLine(); // consume newline
-        return val;
+        double x = scanner.nextDouble();
+        scanner.nextLine();
+        return x;
     }
 }

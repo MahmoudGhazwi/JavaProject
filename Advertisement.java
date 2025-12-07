@@ -26,16 +26,9 @@ public class Advertisement {
         this.isSold = false;     // default
     }
 
-    // --- METHODS FROM UML ---
-
+    // Old detailed display
     public void displayDetails() {
-        System.out.println("Ad ID: " + id);
-        System.out.println("Title: " + title);
-        System.out.println("Description: " + description);
-        System.out.println("Price: " + price);
-        System.out.println("Category: " + category);
-        System.out.println("Owner: " + owner.getUsername());
-        System.out.println("-----------------------------------");
+        System.out.println(toString());
     }
 
     public void markAsSold() {
@@ -75,5 +68,16 @@ public class Advertisement {
 
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return "Ad ID: " + id
+                + " | Title: " + title
+                + " | Price: " + price
+                + " | Category: " + category
+                + " | Owner: " + owner.getUsername()
+                + " | Approved: " + isApproved
+                + " | Sold: " + isSold;
     }
 }
