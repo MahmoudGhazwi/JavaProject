@@ -16,14 +16,14 @@ public class RegisteredUser extends User {
         this.ratings = new ArrayList<>();
     }
 
-    // Post new Ad ++++++
+    // Post new Ad (Done)
     public void postAd(Advertisement ad) {
         ads.add(ad); 
         System.out.println("Ad posted successfully!");
         System.out.println("pending admin approval.");
     }
     
-    // View user ads ++++++
+    // View user ads (Done)
     public List<Advertisement> myAds() {
         return ads;
     }
@@ -33,7 +33,7 @@ public class RegisteredUser extends User {
         System.out.println("Editing ad with ID: " + adId);
     }
 
-    // Delete advertisement ++++++
+    // Delete advertisement (Done)
     public void deleteAd(String adId) {
 
         Advertisement target = null;
@@ -59,41 +59,51 @@ public class RegisteredUser extends User {
         ratings.add(rating);
     }
     
-    // Search advertisements --- To main
-    public List<Advertisement> searchAds(String keyword) {
-        System.out.println("Searching ads with keyword: " + keyword);
-        return new ArrayList<>(); // dummy return for now
-    }
-
-    // View advertisement details --- To main
-    public void viewAdDetails(String adId) {
-        System.out.println("Viewing details of ad: " + adId);
-    }
-
-    // Purchase an advertisement --- To main
-    public Transaction purchaseAd(String adId) {
-        System.out.println("Purchasing ad with ID: " + adId);
-        return new Transaction();
-    }
-
+    // getter
     public List<Rating> getRatings() {
         return ratings;
     }
+    
+    // Solving average rating
+    public double avgRating() {
 
+        if (ratings.isEmpty()) {
+            return 0.0; // no ratings yet
+        }
+
+        int sum = 0;
+
+        for (Rating r : ratings) {
+            sum += r.getScore();
+        }
+
+        return (double) sum / ratings.size();
+    }
+
+    // banned check
     public boolean isBanned() {
         return isBanned;
     }
 
+    // change banned status
     public void setBanned(boolean banned) {
         isBanned = banned;
+    }
+    
+    // View user info to other users
+    public String getInfo() {
+        return "Username: " + getUsername()
+            + " | Ratings: " + ratings.size()
+            + " | Average Rating: " + String.format("%.2f", avgRating());
     }
 
     @Override
     public String toString() {
         return "User ID: " + getId()
-                + " | Username: " + getUsername()
-                + " | Ads Posted: " + ads.size()
-                + " | Ratings: " + ratings.size()
-                + " | Banned: " + isBanned;
+            + " | Username: " + getUsername()
+            + " | Ads Posted: " + ads.size()
+            + " | Ratings: " + ratings.size()
+            + " | Average Rating: " + String.format("%.2f", avgRating())
+            + " | Banned: " + isBanned;
     }
 }

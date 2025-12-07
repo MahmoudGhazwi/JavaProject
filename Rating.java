@@ -21,7 +21,7 @@ public class Rating {
     // --- METHOD FROM UML ---
     public void applyRating() {
         System.out.println("Rating applied successfully:");
-        System.out.println(this);  // استخدام toString
+        System.out.println(this);  // using toString
     }
 
     // --- GETTERS ---

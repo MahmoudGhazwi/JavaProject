@@ -26,11 +26,12 @@ public class Advertisement {
         this.isSold = false;     // default
     }
 
-    // Old detailed display )
+    // Old detailed display
     public void displayDetails() {
         System.out.println(toString());
     }
 
+    // Mark ad as sold
     public void markAsSold() {
         this.isSold = true;
         System.out.println("Advertisement marked as SOLD.");
@@ -69,15 +70,13 @@ public class Advertisement {
     public double getPrice() {
         return price;
     }
-
+    
     @Override
     public String toString() {
-        return "Ad ID: " + id
+        return    "Ad ID: " + id
                 + " | Title: " + title
                 + " | Price: " + price
                 + " | Category: " + category
-                + " | Owner: " + owner.getUsername()
-                + " | Approved: " + isApproved
-                + " | Sold: " + isSold;
+                + " | Owner: " + owner.getUsername();
     }
 }

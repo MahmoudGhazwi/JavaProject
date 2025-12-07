@@ -12,7 +12,7 @@ public class Admin extends User {
         System.out.println("=== Unapproved Advertisements ===");
         for (Advertisement ad : ads) {
             if (!ad.isApproved()) {
-                System.out.println(ad); // استخدام toString
+                System.out.println(ad); // using toString
             }
         }
     }

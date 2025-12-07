@@ -28,6 +28,7 @@ public class Main {
         users.add(buyer);
         admins.add(admin);
 
+        // Starting the System
         System.out.println("=== Marketplace System ===");
 
         while (true) {
@@ -105,10 +106,11 @@ public class Main {
             System.out.println("Logged in as: " + currentUser.getUsername());
             System.out.println("1) View available advertisements");
             System.out.println("2) Show advertisement details");
-            System.out.println("3) Purchase an advertisement");
-            System.out.println("4) Post a new advertisement");
-            System.out.println("5) Show my advertisements");
-            System.out.println("6) Delete my advertisement");
+            System.out.println("3) Show other user detials");
+            System.out.println("4) Purchase an advertisement");
+            System.out.println("5) Post a new advertisement");
+            System.out.println("6) Show my advertisements");
+            System.out.println("7) Delete my advertisement");
             System.out.println("0) Logout");
             System.out.print("Choose: ");
 
@@ -116,11 +118,12 @@ public class Main {
 
             switch (choice) {
                 case 1 -> listAdsShort();
-                case 2 -> showDetails();
-                case 3 -> purchaseAd(currentUser);
-                case 4 -> postNewAd(currentUser);
-                case 5 -> showUserAds(currentUser);
-                case 6 -> deleteUserAd(currentUser);
+                case 2 -> viewOtherUserInfo();
+                case 3 -> showDetails();
+                case 4 -> purchaseAd(currentUser);
+                case 5 -> postNewAd(currentUser);
+                case 6 -> showUserAds(currentUser);
+                case 7 -> deleteUserAd(currentUser);
                 case 0 -> System.out.println("Logging out...");
                 default -> System.out.println("Invalid option.");
             }
@@ -140,7 +143,8 @@ public class Main {
             System.out.println("1) View all advertisements");
             System.out.println("2) View unapproved advertisements");
             System.out.println("3) Approve advertisement");
-            System.out.println("4) Ban a user");
+            System.out.println("4) View user details");
+            System.out.println("5) Ban a user");
             System.out.println("0) Logout");
             System.out.print("Choose: ");
 
@@ -150,7 +154,8 @@ public class Main {
                 case 1 -> listAllAds();
                 case 2 -> admin.viewUnapprovedAds(allAds);
                 case 3 -> approveAd(admin);
-                case 4 -> banUser();
+                case 4 -> adminViewAllUsers();
+                case 5 -> banUser();
                 case 0 -> System.out.println("Logging out...");
                 default -> System.out.println("Invalid option.");
             }
@@ -183,7 +188,8 @@ public class Main {
         owner.postAd(ad);
         allAds.add(ad);
     }
-
+    
+    // show the user ads to itself
     private static void showUserAds(RegisteredUser currentUser) {
         List<Advertisement> myAds = currentUser.myAds();
 
@@ -195,11 +201,11 @@ public class Main {
         System.out.println("\n=== My Advertisements ===");
         for (Advertisement ad : myAds) {
             ad.displayDetails();
-            System.out.println("Approved: " + ad.isApproved());
-            System.out.println("Sold: " + ad.isSold());
+            adStatus(ad);
         }
     }
 
+    // user deletes its Ad
     private static void deleteUserAd(RegisteredUser currentUser) {
         System.out.print("Enter Ad ID to delete: ");
         String id = scanner.nextLine();
@@ -212,6 +218,21 @@ public class Main {
         }
     }
 
+    // list all adds to user
+    private static void listAdsShort() { 
+        System.out.println("\n=== Available Advertisements ==="); 
+        boolean found = false; 
+        for (Advertisement ad : allAds) { 
+            if (ad.isApproved() && !ad.isSold()) {
+                System.out.println("ID: " + ad.getId() + " | Title: " + ad.getTitle());
+                found = true; 
+            } 
+        } 
+        if (!found) { System.out.println("No available advertisements."); 
+        } 
+    }
+
+    // show specifiec Ad details
     private static void showDetails() {
         System.out.print("Enter Ad ID: ");
         String id = scanner.nextLine();
@@ -230,8 +251,7 @@ public class Main {
 
         ad.displayDetails();
     }
-
-
+     
     private static void purchaseAd(RegisteredUser buyer) {
         System.out.print("Enter Ad ID: ");
         String id = scanner.nextLine();
@@ -257,6 +277,21 @@ public class Main {
         createRatingForTransaction(buyer, t);
     }
 
+    private static void viewOtherUserInfo() {
+
+        System.out.print("Enter User ID to view: ");
+        String id = scanner.nextLine();
+
+        for (RegisteredUser user : users) {
+            if (user.getId().equals(id)) {
+                System.out.println("\n=== User Information ===");
+                System.out.println(user.getInfo());   // <-- اليوزر يشوف فقط info المختصرة
+                return;
+            }
+        }
+
+        System.out.println("User not found.");
+    }
 
     // ====================== RATING ======================
 
@@ -317,8 +352,21 @@ public class Main {
 
         for (Advertisement ad : allAds) {
             ad.displayDetails();
-            System.out.println("Approved: " + ad.isApproved());
-            System.out.println("Sold: " + ad.isSold());
+            adStatus(ad);
+        }
+    }
+
+    private static void adminViewAllUsers() {
+
+        if (users.isEmpty()) {
+            System.out.println("No registered users found.");
+            return;
+        }
+
+        System.out.println("\n=== All Registered Users ===");
+
+        for (RegisteredUser user : users) {
+            System.out.println(user.toString());  
         }
     }
 
@@ -352,7 +400,8 @@ public class Main {
 
     private static Advertisement findAdById(String id) {
         for (Advertisement ad : allAds) {
-            if (ad.getId().equals(id)) return ad;
+            if (ad.getId().equals(id)) 
+                return ad;
         }
         return null;
     }
@@ -375,5 +424,10 @@ public class Main {
         double x = scanner.nextDouble();
         scanner.nextLine();
         return x;
+    }
+    
+    // printer
+    private static String adStatus(Advertisement ad){
+        return " | Approved: " + ad.isApproved() + " | Sold: " + ad.isSold(); 
     }
 }
