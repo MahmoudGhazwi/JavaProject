@@ -26,7 +26,7 @@ public class RegisteredUser extends User {
     }
     
     // View user ads ++++++
-    public List<Advertisement> MyAds() {
+    public List<Advertisement> myAds() {
         return ads;
     }
 
@@ -60,7 +60,7 @@ public class RegisteredUser extends User {
     public void addRating(Rating rating) {
         ratings.add(rating);
     }
-    
+
     // Search advertisements --- To main
     public List<Advertisement> searchAds(String keyword) {
         System.out.println("Searching ads with keyword: " + keyword);

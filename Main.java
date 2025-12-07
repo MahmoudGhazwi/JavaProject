@@ -64,12 +64,11 @@ public class Main {
 
             // Check registered users
             for (RegisteredUser user : users) {
-
+                if (user.isBanned()) {
+                    System.out.println("This user is Banned!");
+                    return null;
+                }
                 if (user.login(id, password)) {
-                    if (user.isBanned()){
-                        System.out.println("This user is Banned!");
-                        return null;
-                    }
                     System.out.println("Logged in as Registered User: " + user.getUsername());
                     return user;
                 }
@@ -220,7 +219,7 @@ public class Main {
 
         System.out.println("\n=== My Advertisements ===");
 
-        List<Advertisement> myAds = currentUser.MyAds();  
+        List<Advertisement> myAds = currentUser.myAds();  
 
         if (myAds.isEmpty()) {
             System.out.println("You have no advertisements.");
